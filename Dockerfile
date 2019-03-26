@@ -1,6 +1,9 @@
 
 FROM ubuntu
 
+ENV TZ=Europe/London
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 RUN apt-get update && \
 	apt-get upgrade -q -y && \
 	apt-get install -q -y php curl php-gd php-ldap php-imap sendmail php-pgsql php-curl && \
