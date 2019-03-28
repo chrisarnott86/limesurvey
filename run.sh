@@ -19,6 +19,8 @@ if [ "${DISABLE_MYSQL}" != "yes" ]; then
 
 else
     echo "=> Using an external database"
+    #echo $INT_MARIADB_HOST $INT_limesurvey_DATABASE_USER $INT_limesurvey_DATABASE_PASSWORD $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
+    echo $1 $2 $3 $4
     rm /etc/supervisor/conf.d/supervisord-mysqld.conf
     sed -i "s/host=localhost/host=$INT_MARIADB_HOST/" /app/application/config/config.php
     sed -i "s/'username' => 'root'/'username' => '$INT_limesurvey_DATABASE_USER'/" /app/application/config/config.php
