@@ -3,27 +3,27 @@ FROM tutum/lamp
 
 
 ARG MARIADB_HOST=localhost
-ENV env_var_name=$MARIADB_HOST
+ENV INT_MARIADB_HOST=$MARIADB_HOST
 
 ARG limesurvey_DATABASE_USER="root"
-ENV env_var_name=$limesurvey_DATABASE_USER
+ENV INT_limesurvey_DATABASE_USER=$limesurvey_DATABASE_USER
 
 ARG limesurvey_DATABASE_PASSWORD=""
-ENV env_var_name=$limesurvey_DATABASE_PASSWORD
+ENV INT_limesurvey_DATABASE_PASSWORD=$limesurvey_DATABASE_PASSWORD
 
 ARG limesurvey_USERNAME="admin"
-ENV env_var_name=$limesurvey_USERNAME
+ENV INT_limesurvey_USERNAME=$limesurvey_USERNAME
 
 ARG limesurvey_PASSWORD="password"
-ENV env_var_name=$limesurvey_PASSWORD
+ENV INT_limesurvey_PASSWORD=$limesurvey_PASSWORD
 
 ARG limesurvey_FIRST_NAME="Admin"
-ENV env_var_name=$limesurvey_FIRST_NAME
+ENV INT_limesurvey_FIRST_NAME=$limesurvey_FIRST_NAME
 
 ARG limesurvey_EMAIL="admin@example.com"
-ENV env_var_name=$limesurvey_EMAIL
+ENV INT_limesurvey_EMAIL=$limesurvey_EMAIL
 
-RUN echo $MARIADB_HOST $limesurvey_DATABASE_USER $limesurvey_DATABASE_PASSWORD $limesurvey_USERNAME $limesurvey_PASSWORD $limesurvey_FIRST_NAME $limesurvey_EMAIL
+RUN echo $INT_MARIADB_HOST $INT_limesurvey_DATABASE_USER $INT_limesurvey_DATABASE_PASSWORD $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
 RUN apt-get update && \
 	apt-get upgrade -q -y && \
 	apt-get install -q -y curl php5-gd php5-ldap php5-imap sendmail php5-pgsql php5-curl && \
@@ -45,14 +45,14 @@ ADD apache_default /etc/apache2/sites-available/000-default.conf
 ADD config.php /app/application/config/
 RUN chown www-data:www-data /app/application/config/config.php
 
-RUN sed -i "s/host=localhost/host=$MARIADB_HOST/" /app/application/config/config.php
-RUN sed -i "s/'username' => 'root'/'username' => '$limesurvey_DATABASE_USER'/" /app/application/config/config.php
-RUN sed -i "s/'password' => ''/'password' => '$limesurvey_DATABASE_PASSWORD'/" /app/application/config/config.php
+RUN sed -i "s/host=localhost/host=$INT_MARIADB_HOST/" /app/application/config/config.php
+RUN sed -i "s/'username' => 'root'/'username' => '$INT_limesurvey_DATABASE_USER'/" /app/application/config/config.php
+RUN sed -i "s/'password' => ''/'password' => '$INT_limesurvey_DATABASE_PASSWORD'/" /app/application/config/config.php
 
 ADD start.sh /
 ADD run.sh /
 ADD mysql-setup.sh ./
-
+RUN sed -i 's/\. \/mysql-setup.sh/\. \/mysql-setup.sh $1 $2 $3 $4/' /create_mysql_admin_user.sh
 RUN chmod +x /start.sh && \
     chmod +x /run.sh && \
     chmod +x /mysql-setup.sh
@@ -60,4 +60,5 @@ RUN chmod +x /start.sh && \
 VOLUME /app/upload
 
 EXPOSE 80 3306
-CMD ["/start.sh"]
+RUN echo $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
+CMD /start.sh $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL

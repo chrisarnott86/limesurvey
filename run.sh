@@ -12,7 +12,7 @@ if [ "${DISABLE_MYSQL}" != "yes" ]; then
         echo "=> Installing MySQL ..."
         mysql_install_db > /dev/null 2>&1
         echo "=> Done!"
-        /create_mysql_admin_user.sh
+        /create_mysql_admin_user.sh $1 $2 $3 $4
     else
         echo "=> Using an existing volume of MySQL"
     fi

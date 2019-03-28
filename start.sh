@@ -2,6 +2,6 @@
 
 cp -r /uploadstruct/* /app/upload
 
-./run.sh
+./run.sh $1 $2 $3 $4
 
 
