@@ -20,6 +20,7 @@ if [ "${DISABLE_MYSQL}" != "yes" ]; then
 else
     echo "=> Using an external database"
     rm /etc/supervisor/conf.d/supervisord-mysqld.conf
+    . /mysql-setup.sh $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
 fi
 
 
