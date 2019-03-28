@@ -45,16 +45,12 @@ ADD apache_default /etc/apache2/sites-available/000-default.conf
 ADD config.php /app/application/config/
 RUN chown www-data:www-data /app/application/config/config.php
 
-#RUN mysql -e "show databases"
-#RUN sed -i "s/host=localhost/host=$MARIADB_HOST/" /app/application/config/config.php
-#RUN sed -i "s/'username' => 'root'/'username' => '$limesurvey_DATABASE_USER'/" /app/application/config/config.php
-#RUN sed -i "s/'password' => ''/'password' => '$limesurvey_DATABASE_PASSWORD'/" /app/application/config/config.php
+RUN sed -i "s/host=localhost/host=$MARIADB_HOST/" /app/application/config/config.php
+RUN sed -i "s/'username' => 'root'/'username' => '$limesurvey_DATABASE_USER'/" /app/application/config/config.php
+RUN sed -i "s/'password' => ''/'password' => '$limesurvey_DATABASE_PASSWORD'/" /app/application/config/config.php
 
-#RUN cat /app/application/config/config.php
-
-#RUN echo install $limesurvey_USERNAME $limesurvey_PASSWORD $limesurvey_FIRST_NAME $limesurvey_EMAIL
-#RUN cd /app/application/commands/ && ls -l
-#RUN cd /app/application/commands/ && /usr/bin/php console.php install $limesurvey_USERNAME $limesurvey_PASSWORD $limesurvey_FIRST_NAME $limesurvey_EMAIL
+RUN cd /app/application/commands/ && ls -l
+RUN cd /app/application/commands/ && /usr/bin/php console.php install $limesurvey_USERNAME $limesurvey_PASSWORD $limesurvey_FIRST_NAME $limesurvey_EMAIL
 
 ADD start.sh /
 ADD run.sh /
