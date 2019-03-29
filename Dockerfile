@@ -1,6 +1,4 @@
-
 FROM tutum/lamp
-
 
 ARG MARIADB_HOST=localhost
 ENV INT_MARIADB_HOST=$MARIADB_HOST
@@ -26,7 +24,6 @@ ENV INT_limesurvey_FIRST_NAME=$limesurvey_FIRST_NAME
 ARG limesurvey_EMAIL="admin@example.com"
 ENV INT_limesurvey_EMAIL=$limesurvey_EMAIL
 
-RUN echo $INT_MARIADB_HOST $INT_limesurvey_DATABASE_USER $INT_limesurvey_DATABASE_PASSWORD $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
 RUN apt-get update && \
 	apt-get upgrade -q -y && \
 	apt-get install -q -y curl php5-gd php5-ldap php5-imap sendmail php5-pgsql php5-curl && \
@@ -56,13 +53,12 @@ RUN sed -i "s/'password' => ''/'password' => '$INT_limesurvey_DATABASE_PASSWORD'
 ADD start.sh /
 ADD run.sh /
 ADD mysql-setup.sh ./
-RUN sed -i 's/\. \/mysql-setup.sh/\. \/mysql-setup.sh $1 $2 $3 $4/' /create_mysql_admin_user.sh
+
 RUN chmod +x /start.sh && \
     chmod +x /run.sh && \
     chmod +x /mysql-setup.sh
 
 VOLUME /app/upload
 
-EXPOSE 80 3306
-RUN echo $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
-CMD /start.sh $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL $INT_limesurvey_DATABASE_NAME
+EXPOSE 80
+CMD /start.sh

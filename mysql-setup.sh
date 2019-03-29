@@ -1,4 +1,2 @@
 #!/bin/bash
-echo "here i am"
-echo $1 $2 $3 $4
-cd /app/application/commands/ && /usr/bin/php console.php install $1 $2 $3 $4
+cd /app/application/commands/ && /usr/bin/php console.php install $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
