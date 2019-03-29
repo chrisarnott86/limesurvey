@@ -49,7 +49,7 @@ ADD config.php /app/application/config/
 RUN chown www-data:www-data /app/application/config/config.php
 
 RUN sed -i "s/host=localhost/host=$INT_MARIADB_HOST/" /app/application/config/config.php
-RUN sed -i "s/dbname=limesurvey/dbname=$INT_MARIADB_DATABASE_NAME/" /app/application/config/config.php
+RUN sed -i "s/dbname=limesurvey/dbname=$INT_limesurvey_DATABASE_NAME/" /app/application/config/config.php
 RUN sed -i "s/'username' => 'root'/'username' => '$INT_limesurvey_DATABASE_USER'/" /app/application/config/config.php
 RUN sed -i "s/'password' => ''/'password' => '$INT_limesurvey_DATABASE_PASSWORD'/" /app/application/config/config.php
 

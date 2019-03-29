@@ -23,7 +23,7 @@ else
     echo $1 $2 $3 $4
     rm /etc/supervisor/conf.d/supervisord-mysqld.conf
     sed -i "s/host=localhost/host=${INT_MARIADB_HOST}/" /app/application/config/config.php
-    sed -i "s/dbname=limesurvey/dbname='${INT_limesurvey_DATABASE_NAME}'/" /app/application/config/config.php
+    sed -i "s/dbname=limesurvey/dbname=${INT_limesurvey_DATABASE_NAME}/" /app/application/config/config.php
     sed -i "s/'username' => 'root'/'username' => '${INT_limesurvey_DATABASE_USER}'/" /app/application/config/config.php
     sed -i "s/'password' => ''/'password' => '${INT_limesurvey_DATABASE_PASSWORD}'/" /app/application/config/config.php
     . /mysql-setup.sh $1 $2 $3 $4
