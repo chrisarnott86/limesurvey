@@ -11,6 +11,9 @@ ENV INT_limesurvey_DATABASE_USER=$limesurvey_DATABASE_USER
 ARG limesurvey_DATABASE_PASSWORD=""
 ENV INT_limesurvey_DATABASE_PASSWORD=$limesurvey_DATABASE_PASSWORD
 
+ARG limesurvey_DATABASE_NAME="limesurvey"
+ENV INT_limesurvey_DATABASE_NAME=$limesurvey_DATABASE_NAME
+
 ARG limesurvey_USERNAME="admin"
 ENV INT_limesurvey_USERNAME=$limesurvey_USERNAME
 
@@ -46,6 +49,7 @@ ADD config.php /app/application/config/
 RUN chown www-data:www-data /app/application/config/config.php
 
 RUN sed -i "s/host=localhost/host=$INT_MARIADB_HOST/" /app/application/config/config.php
+RUN sed -i "s/dbname=limesurvey/dbname=$INT_MARIADB_DATABASE_NAME/" /app/application/config/config.php
 RUN sed -i "s/'username' => 'root'/'username' => '$INT_limesurvey_DATABASE_USER'/" /app/application/config/config.php
 RUN sed -i "s/'password' => ''/'password' => '$INT_limesurvey_DATABASE_PASSWORD'/" /app/application/config/config.php
 
@@ -61,4 +65,4 @@ VOLUME /app/upload
 
 EXPOSE 80 3306
 RUN echo $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
-CMD /start.sh $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL
+CMD /start.sh $INT_limesurvey_USERNAME $INT_limesurvey_PASSWORD $INT_limesurvey_FIRST_NAME $INT_limesurvey_EMAIL $INT_limesurvey_DATABASE_NAME
